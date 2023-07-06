@@ -1,10 +1,13 @@
+import { Link } from "react-router-dom";
 import "./WarehousePreview.css";
 
-function WarehousePreview() {
+function WarehousePreview({ warehouse }) {
   return (
     <div className="warehouse-preview-container">
-      <p>Location</p>
-      <div>Click to Manage Inventory</div>
+      <h6>{warehouse.location}</h6>
+      <Link to={"/location"} state={warehouse}>
+        Click to Manage Inventory
+      </Link>
     </div>
   );
 }

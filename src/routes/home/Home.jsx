@@ -7,7 +7,6 @@ export default function Home() {
   const [warehouses, setWarehouses] = useState([]);
   const [toggleAddForm, setToggleAddForm] = useState(false);
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
-  console.log(warehouses);
 
   useEffect(() => {
     const getWarehouses = async () => {
@@ -24,7 +23,6 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      <Link to={"/location"}>Link to the Warehouse</Link>
       <h3>Current Warehouses</h3>
       <form>
         <input />
@@ -32,7 +30,7 @@ export default function Home() {
       </form>
       <ul>
         {warehouses.map((warehouse) => (
-          <WarehousePreview />
+          <WarehousePreview key={warehouse.warehouseId} warehouse={warehouse} />
         ))}
       </ul>
     </div>
