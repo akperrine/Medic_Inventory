@@ -9,7 +9,7 @@ import {
 import { FormType } from "../../utils/enums";
 import { IInventory, IInventoryDTO, IWarehouse } from "../../utils/types";
 import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
-import InventoryTable from "../../components/inventoryTable/InventoryTable";
+import InventoryTable from "../inventoryTable/InventoryTable";
 
 const initialAddFormInput = {
   itemName: "",
@@ -18,17 +18,13 @@ const initialAddFormInput = {
 };
 
 const WarehouseInventory = (props: {
+  title: string;
   warehouse: IWarehouse;
   setWarehouse: React.Dispatch<React.SetStateAction<IWarehouse>>;
 }) => {
-  // const location = useLocation();
   const [option, setOption] = useState<FormType>(FormType.NONE);
   const [editItemId, setEditItemId] = useState(NaN);
   const { warehouse, setWarehouse } = props;
-  // const [warehouse, setWarehouse] = useState<IWarehouse>(warehouse);
-  // const [warehouse, setWarehouse] = useState<IWarehouse>(
-  //   location.state.warehouse
-  // );
   const [formInput, setFormInput] = useState(initialAddFormInput);
   const [toggleDelete, setToggleDelete] = useState(false);
 
@@ -118,8 +114,9 @@ const WarehouseInventory = (props: {
 
   return (
     <div className="inventory-table-container">
+      <h2>{props.title}</h2>
       <InventoryTable
-        warehouse={warehouse}
+        inventories={warehouse.warehouseItems}
         toggleDelete={toggleDelete}
         handleDelete={handleDelete}
         handleToggleEdit={handleToggleEdit}

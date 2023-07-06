@@ -3,14 +3,14 @@ import { HiOutlineTrash } from "react-icons/hi";
 import { IInventoryTableProps } from "../../utils/types";
 
 function InventoryTable({
-  warehouse,
+  inventories,
   toggleDelete,
   handleDelete,
   handleToggleEdit,
 }: IInventoryTableProps) {
   return (
     <>
-      <h2>{warehouse.location}</h2>
+      {/* <h2>{warehouse.location}</h2> */}
       <table className="inventory-table">
         <thead className="inventory-table-head">
           <tr>
@@ -21,19 +21,23 @@ function InventoryTable({
           </tr>
         </thead>
         <tbody>
-          {warehouse.warehouseItems.map((item) => (
-            <tr key={item.item.itemId} className="inventory-row">
-              <td>{item.item.itemName}</td>
-              <td>{item.quantity}</td>
-              <td>{item.maxCapacity}</td>
+          {inventories.map((inventory) => (
+            <tr key={inventory.item.itemId} className="inventory-row">
+              <td>{inventory.item.itemName}</td>
+              <td>{inventory.quantity}</td>
+              <td>{inventory.maxCapacity}</td>
               <td>
                 {toggleDelete ? (
                   <button className="preview-change-btn">
-                    <HiOutlineTrash onClick={(e) => handleDelete(e, item)} />
+                    <HiOutlineTrash
+                      onClick={(e) => handleDelete(e, inventory)}
+                    />
                   </button>
                 ) : (
                   <button className="preview-change-btn">
-                    <AiTwotoneEdit onClick={() => handleToggleEdit(item)} />
+                    <AiTwotoneEdit
+                      onClick={() => handleToggleEdit(inventory)}
+                    />
                   </button>
                 )}
               </td>

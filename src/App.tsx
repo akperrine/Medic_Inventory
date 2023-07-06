@@ -9,7 +9,7 @@ const App = () => {
   return (
     <div className="app-container">
       <Navigation />
-      <Routes className="body-container">
+      <Routes>
         <Route path="/" element={<Outlet />} />
         <Route index element={<Home />} />
         <Route path="/location" element={<LinkedSingleWarehouse />} />

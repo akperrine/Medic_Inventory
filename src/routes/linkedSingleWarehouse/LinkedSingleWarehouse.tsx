@@ -9,7 +9,7 @@ import { FormType } from "../../utils/enums";
 import { IInventory, IInventoryDTO, IWarehouse } from "../../utils/types";
 import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
 import InventoryTable from "../../components/inventoryTable/InventoryTable";
-import WarehouseInventory from "../warehouseInventory/WarehouseInventory";
+import WarehouseInventory from "../../components/warehouseInventory/WarehouseInventory";
 
 const LinkedSingleWarehouse = () => {
   const location = useLocation();
@@ -18,7 +18,11 @@ const LinkedSingleWarehouse = () => {
   );
   return (
     <>
-      <WarehouseInventory warehouse={warehouse} setWarehouse={setWarehouse} />
+      <WarehouseInventory
+        title={warehouse.location}
+        warehouse={warehouse}
+        setWarehouse={setWarehouse}
+      />
     </>
   );
 };

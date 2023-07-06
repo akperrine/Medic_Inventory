@@ -32,7 +32,7 @@ export interface IAddWarehouseFormProps {
 }
 
 export interface IInventoryTableProps {
-  warehouse: IWarehouse;
+  inventories: IInventory[];
   toggleDelete: boolean;
   handleDelete: (
     e: React.MouseEvent<SVGElement>,
