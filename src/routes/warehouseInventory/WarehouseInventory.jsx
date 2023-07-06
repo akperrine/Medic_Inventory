@@ -8,15 +8,17 @@ import {
   getWarehouses,
 } from "../../utils/warehouseAPI/WarehouseApi";
 
+const initialAddFormInput = {
+  itemName: "",
+  quantity: "",
+  maxCapacity: "",
+};
+
 const WarehouseInventory = () => {
   const location = useLocation();
   const [toggleAddInventory, setToggleAddInventory] = useState(false);
   const [warehouse, setWarehouse] = useState(location.state.warehouse);
-  const [addFormInput, setAddFormInput] = useState({
-    itemName: "",
-    quantity: "",
-    maxCapacity: "",
-  });
+  const [addFormInput, setAddFormInput] = useState(initialAddFormInput);
   console.log(warehouse);
 
   const handleFormChange = (e) => {
@@ -34,16 +36,16 @@ const WarehouseInventory = () => {
       (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
       quantity <= maxCapacity
     ) {
-      console.log("Forms don't contain numbers");
       const inventoryDataPayload = {
         ...addFormInput,
         warehouseId: warehouse.warehouseId,
       };
-      console.log(inventoryDataPayload);
       await addInvevtory(inventoryDataPayload);
       await getSingleWarehouse(warehouse.warehouseId)
         .then((jsonData) => setWarehouse(jsonData))
         .catch((error) => console.log("Error:", error));
+      setAddFormInput(initialAddFormInput);
+      handleToggleAdd(false);
     }
   };
 
