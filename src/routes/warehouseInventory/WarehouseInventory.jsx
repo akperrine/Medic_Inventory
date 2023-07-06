@@ -2,13 +2,50 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AiTwotoneEdit } from "react-icons/ai";
 import "./WarehouseInventory.css";
+import { addInvevtory } from "../../utils/warehouseAPI/InventoryApi";
+import {
+  getSingleWarehouse,
+  getWarehouses,
+} from "../../utils/warehouseAPI/WarehouseApi";
 
 const WarehouseInventory = () => {
   const location = useLocation();
   const [toggleAddInventory, setToggleAddInventory] = useState(false);
-  const warehouse = location.state;
+  const [warehouse, setWarehouse] = useState(location.state.warehouse);
+  const [addFormInput, setAddFormInput] = useState({
+    itemName: "",
+    quantity: "",
+    maxCapacity: "",
+  });
+  console.log(warehouse);
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+
+    setAddFormInput({ ...addFormInput, [name]: value });
+  };
 
   const handleToggleAdd = () => setToggleAddInventory(!toggleAddInventory);
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    const { quantity, maxCapacity } = addFormInput;
+    if (
+      (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
+      quantity <= maxCapacity
+    ) {
+      console.log("Forms don't contain numbers");
+      const inventoryDataPayload = {
+        ...addFormInput,
+        warehouseId: warehouse.warehouseId,
+      };
+      console.log(inventoryDataPayload);
+      await addInvevtory(inventoryDataPayload);
+      await getSingleWarehouse(warehouse.warehouseId)
+        .then((jsonData) => setWarehouse(jsonData))
+        .catch((error) => console.log("Error:", error));
+    }
+  };
 
   return (
     <div className="inventory-table-container">
@@ -38,15 +75,15 @@ const WarehouseInventory = () => {
         </tbody>
       </table>
       {toggleAddInventory ? (
-        <form className="inventory-form">
+        <form className="inventory-form" onSubmit={handleAddSubmit}>
           <label>Item Name</label>
-          <input />
+          <input name="itemName" onChange={handleFormChange} required />
           <label>Quantity</label>
-          <input />
+          <input name="quantity" onChange={handleFormChange} required />
           <label>Maximum Capacity</label>
-          <input />
+          <input name="maxCapacity" onChange={handleFormChange} required />
           <div className="add-warehouse-form-btn-container">
-            <button type="button">Submit</button>
+            <button type="submit">Submit</button>
             <button type="button" onClick={handleToggleAdd}>
               Cancel
             </button>
