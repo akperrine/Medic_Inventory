@@ -1,15 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import {
   addWarehouse,
   getWarehouses,
 } from "../../utils/warehouseAPI/WarehouseApi";
-import { Iwarehouse, Iitem, Iinventory } from "../../utils/types";
+import { IWarehouse, IItem, IInventory } from "../../utils/types";
+import { FormType } from "../../utils/enums";
 import WarehousePreview from "../../components/warehouse-preview/WarehousePreview";
 import "./Home.css";
 import AddWarehouseForm from "../../components/forms/addWarehouseForm/AddWarehouseForm";
 
 export default function Home() {
-  const [warehouses, setWarehouses] = useState<Iwarehouse[]>([]);
+  const [warehouses, setWarehouses] = useState<IWarehouse[]>([]);
   const [toggleAddForm, setToggleAddForm] = useState(false);
   const [locationInput, setLocationInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -63,6 +64,7 @@ export default function Home() {
         handleChange={handleChange}
         inputRef={inputRef}
         handleAddFormVisabiltiy={handleAddFormVisabiltiy}
+        addOrUpdate={FormType.ADD}
       />
     ) : (
       <button onClick={handleAddFormVisabiltiy} className="effect-btn inv-btn">
@@ -71,7 +73,7 @@ export default function Home() {
     );
   };
 
-  const renderWarehousePreview = (warehouse: Iwarehouse): JSX.Element => (
+  const renderWarehousePreview = (warehouse: IWarehouse): JSX.Element => (
     <WarehousePreview
       key={warehouse.warehouseId}
       warehouse={warehouse}

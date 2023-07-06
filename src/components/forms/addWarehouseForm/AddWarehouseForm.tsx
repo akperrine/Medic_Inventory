@@ -1,15 +1,18 @@
-import { IaddWarehouseFormProps } from "../../../utils/types";
+import { IAddWarehouseFormProps } from "../../../utils/types";
 import "./AddWarehouseForm.css";
 
 function AddWarehouseForm({
   handleFormSubmit,
   handleChange,
-  inputRef,
   handleAddFormVisabiltiy,
-}: IaddWarehouseFormProps) {
+  inputRef,
+  addOrUpdate,
+}: IAddWarehouseFormProps) {
   return (
     <form className="add-warehouse-form" onSubmit={handleFormSubmit}>
-      <label>Add a new location</label>
+      <label>
+        {addOrUpdate === "add" ? "Add a new location" : "Update Location"}
+      </label>
       <input onChange={handleChange} ref={inputRef} />
       <div className="add-warehouse-form-btn-container">
         <button type="button">Submit</button>

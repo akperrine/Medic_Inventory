@@ -1,25 +1,32 @@
 import { ChangeEvent, FormEvent, RefObject } from "react";
+import { FormType } from "./enums";
 
-export interface Iwarehouse {
+export interface IWarehouse {
   warehouseId: number;
   location: string;
-  warehouseItems: Iinventory[];
+  warehouseItems: IInventory[];
 }
 
-export interface Iinventory {
-  item: Iitem;
+export interface IInventory {
+  item: IItem;
   quantity: number;
   maxCapacity: number;
 }
 
-export interface Iitem {
+export interface IItem {
   itemId: number;
   itemName: string;
 }
 
-export interface IaddWarehouseFormProps {
+export interface IWarehousePreview {
+  warehouse: IWarehouse;
+  setWarehouses: React.Dispatch<React.SetStateAction<IWarehouse[]>>;
+}
+
+export interface IAddWarehouseFormProps {
   handleFormSubmit: (event: React.FocusEvent<HTMLFormElement>) => void;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
   inputRef: RefObject<HTMLInputElement>;
   handleAddFormVisabiltiy: () => void;
+  addOrUpdate: FormType;
 }
