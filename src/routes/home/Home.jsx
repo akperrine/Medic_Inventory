@@ -9,7 +9,6 @@ import "./Home.css";
 export default function Home() {
   const [warehouses, setWarehouses] = useState([]);
   const [toggleAddForm, setToggleAddForm] = useState(false);
-  const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
   const [locationInput, setLocationInput] = useState("");
 
   //Set Warehouses
@@ -24,30 +23,26 @@ export default function Home() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+    if (locationInput.trim() === "") {
+      console.log(locationInput);
+      console.log("work");
+      alert("Location must not be empty");
+      return;
+    }
+
     try {
-      // const response = await fetch("http://localhost:8080/warehouse", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ location: locationInput }),
-      // });
-
       await addWarehouse(locationInput);
-
       await getWarehouses()
         .then((jsonData) => setWarehouses(jsonData))
         .catch((error) => console.log("Error:", error));
+      setLocationInput("");
+      setToggleAddForm(false);
     } catch (error) {
       console.log(error);
     }
-    setLocationInput("");
-    setToggleAddForm(false);
   };
 
-  const handleChange = (e) => {
-    setLocationInput(e.target.value);
-  };
+  const handleChange = (e) => setLocationInput(e.target.value);
 
   return (
     <div className="home-container">
@@ -71,7 +66,11 @@ export default function Home() {
 
       <ul className="warehouse-list">
         {warehouses.map((warehouse) => (
-          <WarehousePreview key={warehouse.warehouseId} warehouse={warehouse} />
+          <WarehousePreview
+            key={warehouse.warehouseId}
+            warehouse={warehouse}
+            setWarehouses={setWarehouses}
+          />
         ))}
       </ul>
     </div>

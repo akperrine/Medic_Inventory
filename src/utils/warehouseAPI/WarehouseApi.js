@@ -17,3 +17,16 @@ export const addWarehouse = async (location) => {
     body: JSON.stringify({ location: location }),
   });
 };
+
+export const updateWarehouse = async (warehouseId, location) => {
+  return await fetch("http://localhost:8080/warehouse/update", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      warehouseId: warehouseId,
+      location: location,
+    }),
+  });
+};
