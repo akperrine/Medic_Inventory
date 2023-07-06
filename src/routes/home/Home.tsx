@@ -3,9 +3,10 @@ import {
   addWarehouse,
   getWarehouses,
 } from "../../utils/warehouseAPI/WarehouseApi";
-import { Iwarehouse, Iitem, Iinventory } from "../../types";
+import { Iwarehouse, Iitem, Iinventory } from "../../utils/types";
 import WarehousePreview from "../../components/warehouse-preview/WarehousePreview";
 import "./Home.css";
+import AddWarehouseForm from "../../components/forms/addWarehouseForm/AddWarehouseForm";
 
 export default function Home() {
   const [warehouses, setWarehouses] = useState<Iwarehouse[]>([]);
@@ -20,7 +21,7 @@ export default function Home() {
     }
   }, [toggleAddForm]);
 
-  //Set Warehouses
+  //Set Warehouses with get request to back end
   useEffect(() => {
     getWarehouses()
       .then((jsonData) => setWarehouses(jsonData))
@@ -55,37 +56,35 @@ export default function Home() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLocationInput(e.target.value);
 
+  const renderAddWarehouseFormOrButton = (): JSX.Element => {
+    return toggleAddForm ? (
+      <AddWarehouseForm
+        handleFormSubmit={handleFormSubmit}
+        handleChange={handleChange}
+        inputRef={inputRef}
+        handleAddFormVisabiltiy={handleAddFormVisabiltiy}
+      />
+    ) : (
+      <button onClick={handleAddFormVisabiltiy} className="effect-btn inv-btn">
+        Add warehouse {"\u271A"}
+      </button>
+    );
+  };
+
+  const renderWarehousePreview = (warehouse: Iwarehouse): JSX.Element => (
+    <WarehousePreview
+      key={warehouse.warehouseId}
+      warehouse={warehouse}
+      setWarehouses={setWarehouses}
+    />
+  );
+
   return (
     <div className="home-container">
       <h3>Current Warehouses</h3>
-      {toggleAddForm ? (
-        <form className="add-warehouse-form" onSubmit={handleFormSubmit}>
-          <label>Add a new location</label>
-          <input onChange={handleChange} ref={inputRef} />
-          <div className="add-warehouse-form-btn-container">
-            <button type="button">Submit</button>
-            <button type="button" onClick={handleAddFormVisabiltiy}>
-              Cancel
-            </button>
-          </div>
-        </form>
-      ) : (
-        <button
-          onClick={handleAddFormVisabiltiy}
-          className="effect-btn inv-btn"
-        >
-          Add warehouse {"\u271A"}
-        </button>
-      )}
-
+      {renderAddWarehouseFormOrButton()}
       <ul className="warehouse-list">
-        {warehouses.map((warehouse) => (
-          <WarehousePreview
-            key={warehouse.warehouseId}
-            warehouse={warehouse}
-            setWarehouses={setWarehouses}
-          />
-        ))}
+        {warehouses.map((warehouse) => renderWarehousePreview(warehouse))}
       </ul>
     </div>
   );
