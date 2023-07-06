@@ -1,5 +1,5 @@
 import { Outlet, Route, Routes } from "react-router-dom";
-import Warehouse from "./routes/WarehouseLocation";
+import Warehouse from "./routes/WarehouseInventory";
 import Home from "./routes/home/Home";
 import Navigation from "./routes/navigation/Navigation";
 import "./App.css";

@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import "./Navigation.css";
 
-const Navigation = () => {
+function Navigation() {
   return (
     <>
       <nav className="navbar">
@@ -15,6 +15,6 @@ const Navigation = () => {
       <Outlet />
     </>
   );
-};
+}
 
 export default Navigation;
