@@ -11,7 +11,6 @@ import {
 import { FormType } from "../../utils/enums";
 import { IInventory, IInventoryDTO, IWarehouse } from "../../utils/types";
 import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
-import AddInventoryForm from "../../components/forms/addInventoryForm/UpdateInventoryForm";
 
 const initialAddFormInput = {
   itemName: "",
@@ -91,7 +90,7 @@ const WarehouseInventory = () => {
   };
 
   const handleDelete = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.MouseEvent<SVGElement>,
     item: IInventory
   ) => {
     e.preventDefault();
