@@ -22,7 +22,7 @@ td {
   padding: 5px;
 }
 
-.inventory-form {
+.inventory-add-form {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
@@ -33,9 +33,9 @@ td {
   padding: 10px;
 }
 
-.inventory-form > input {
+.inventory-add-form > input {
   width: 200px;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .inv-btn-container {
