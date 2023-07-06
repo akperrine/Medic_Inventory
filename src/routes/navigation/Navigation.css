@@ -8,6 +8,10 @@
   height: 7.5vh;
 }
 
+.logo {
+  height: 40px;
+}
+
 .nav-list {
   list-style-type: none;
   margin: 0;
@@ -29,4 +33,28 @@
 
 .nav-link:hover {
   text-decoration: none;
+}
+
+.home-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 17px;
+  transition-property: font-size, box-shadow;
+  transition: 0.2s ease;
+  backface-visibility: hidden;
+  border: 1px solid var(--accent-color-1);
+}
+
+.home-btn:hover {
+  -webkit-font-smoothing: subpixel-antialiased;
+  opacity: 1;
+}
+.home-btn:active {
+  transition: 0.2s;
+  transform: translateY(1px);
+  box-shadow: 2px 1px 5px var(--accent-color-1);
 }

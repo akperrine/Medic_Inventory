@@ -32,7 +32,7 @@ export default function Home() {
 
     try {
       await addWarehouse(locationInput);
-      await getWarehouses()
+      getWarehouses()
         .then((jsonData) => setWarehouses(jsonData))
         .catch((error) => console.log("Error:", error));
       setLocationInput("");

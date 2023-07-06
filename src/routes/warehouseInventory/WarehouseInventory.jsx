@@ -8,10 +8,7 @@ import {
   deleteInvevtory,
   updateInvevtory,
 } from "../../utils/warehouseAPI/InventoryApi";
-import {
-  getSingleWarehouse,
-  getWarehouses,
-} from "../../utils/warehouseAPI/WarehouseApi";
+import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
 
 const initialAddFormInput = {
   itemName: "",
@@ -62,7 +59,7 @@ const WarehouseInventory = () => {
     const { quantity, maxCapacity } = formInput;
     if (
       (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
-      quantity <= maxCapacity
+      parseInt(quantity) <= parseInt(maxCapacity)
     ) {
       const inventoryDataPayload = {
         ...formInput,
@@ -79,7 +76,6 @@ const WarehouseInventory = () => {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-
     const { itemName, quantity, maxCapacity } = formInput;
     if (
       (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
