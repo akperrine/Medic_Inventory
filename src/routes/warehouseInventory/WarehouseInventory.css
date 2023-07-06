@@ -22,6 +22,17 @@ td {
   padding: 5px;
 }
 
+.inventory-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.inventory-form > input {
+  width: 20%;
+  margin-top: 10px;
+}
+
 .inv-btn-container {
   width: 100%;
   display: flex;
