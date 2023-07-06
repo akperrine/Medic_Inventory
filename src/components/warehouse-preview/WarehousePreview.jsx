@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -12,6 +12,13 @@ import {
 function WarehousePreview({ warehouse, setWarehouses }) {
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
   const [locationInput, setLocationInput] = useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [toggleUpdateForm]);
 
   const handleToggleUpdate = () => setToggleUpdateForm(!toggleUpdateForm);
 
@@ -39,7 +46,6 @@ function WarehousePreview({ warehouse, setWarehouses }) {
   const handleToggleDelete = async (e) => {
     const response = prompt("Are you sure you want to delete?");
     const formattedResponse = response.toLowerCase().trim();
-    console.log(formattedResponse);
     if (formattedResponse == "yes") {
       deleteWarehouse(warehouse.warehouseId);
       alert(`Successfully deleted warehouse: ${warehouse.location}`);
@@ -56,7 +62,7 @@ function WarehousePreview({ warehouse, setWarehouses }) {
       {toggleUpdateForm ? (
         <form className="add-warehouse-form" onSubmit={handleUpdateSubmit}>
           <label>Add a new location</label>
-          <input onChange={handleChange} />
+          <input onChange={handleChange} ref={inputRef} />
           <div className="add-warehouse-form-btn-container">
             <button type="submit">Submit</button>
             <button type="button" onClick={handleToggleUpdate}>

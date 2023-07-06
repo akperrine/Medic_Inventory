@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   addWarehouse,
   getWarehouses,
@@ -10,6 +10,13 @@ export default function Home() {
   const [warehouses, setWarehouses] = useState([]);
   const [toggleAddForm, setToggleAddForm] = useState(false);
   const [locationInput, setLocationInput] = useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [toggleAddForm]);
 
   //Set Warehouses
   useEffect(() => {
@@ -50,7 +57,7 @@ export default function Home() {
       {toggleAddForm ? (
         <form className="add-warehouse-form" onSubmit={handleFormSubmit}>
           <label>Add a new location</label>
-          <input onChange={handleChange} />
+          <input onChange={handleChange} ref={inputRef} />
           <div className="add-warehouse-form-btn-container">
             <button type="button">Submit</button>
             <button type="button" onClick={handleAddFormVisabiltiy}>
