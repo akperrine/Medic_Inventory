@@ -17,6 +17,23 @@ h3 {
   justify-content: center;
 }
 
+.add-warehouse-form {
+  display: flex;
+  flex-direction: column;
+}
+.add-warehouse-form > input {
+  margin-bottom: 10px;
+}
+
+.add-warehouse-form-btn-container {
+  margin: 5px;
+}
+
+.add-warehouse-form-btn-container > button {
+  margin: 5px;
+  padding: 5px;
+}
+
 .add-warehouse-btn {
   opacity: 0.7;
   display: flex;
@@ -25,7 +42,6 @@ h3 {
   height: 30px;
   padding: 10px;
   border-radius: 8px;
-  /* transition: font-size 0.2s ease; */
   font-size: 17px;
   transition-property: font-size, box-shadow;
   transition: 0.2s ease;
