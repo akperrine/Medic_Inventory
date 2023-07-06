@@ -8,7 +8,7 @@
   border-radius: 8px;
   font-size: 17px;
   transition-property: font-size, box-shadow;
-  transition: 0.2s ease;
+  transition: 0.4s ease;
   backface-visibility: hidden;
   border: 1px solid var(--accent-color-1);
 }

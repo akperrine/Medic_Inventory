@@ -3,15 +3,17 @@ import {
   addWarehouse,
   getWarehouses,
 } from "../../utils/warehouseAPI/WarehouseApi";
+import { Iwarehouse, Iitem, Iinventory } from "../../types";
 import WarehousePreview from "../../components/warehouse-preview/WarehousePreview";
 import "./Home.css";
 
 export default function Home() {
-  const [warehouses, setWarehouses] = useState([]);
+  const [warehouses, setWarehouses] = useState<Iwarehouse[]>([]);
   const [toggleAddForm, setToggleAddForm] = useState(false);
   const [locationInput, setLocationInput] = useState("");
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  // Focus cursor on input when Add Warehouse button clicked
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -27,7 +29,7 @@ export default function Home() {
 
   const handleAddFormVisabiltiy = () => setToggleAddForm(!toggleAddForm);
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (locationInput.trim() === "") {
@@ -49,7 +51,9 @@ export default function Home() {
     }
   };
 
-  const handleChange = (e) => setLocationInput(e.target.value);
+  // Update Edit Location state
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setLocationInput(e.target.value);
 
   return (
     <div className="home-container">
