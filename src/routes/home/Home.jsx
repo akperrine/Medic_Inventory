@@ -28,7 +28,7 @@ export default function Home() {
         <input />
         <button>Submit</button>
       </form>
-      <ul>
+      <ul className="warehouse-list">
         {warehouses.map((warehouse) => (
           <WarehousePreview key={warehouse.warehouseId} warehouse={warehouse} />
         ))}

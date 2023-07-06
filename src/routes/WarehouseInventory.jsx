@@ -26,11 +26,7 @@ const WarehouseLocation = () => {
                 <td>{item.maxCapacity}</td>
                 <td>
                   <button>
-                    <img
-                      src="pencil-icon.png"
-                      alt="Edit"
-                      style={{ width: "16px", height: "16px" }}
-                    />
+                    <img src="pencil-icon.png" alt="Edit" />
                   </button>
                 </td>
               </tr>

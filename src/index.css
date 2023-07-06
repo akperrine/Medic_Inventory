@@ -6,6 +6,7 @@
   --secondary-color-1: #0a2342;
   --secondary-color-2: #3c1642;
   --secondary-color-3: #003b46;
+  --secondary-color-4: #565656;
 
   /* Accents/Highlights */
   --accent-color-1: #007ea7;
@@ -34,4 +35,12 @@ body {
 
 #root {
   min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+a:hover {
+  color: var(--neutral-color-1);
 }
