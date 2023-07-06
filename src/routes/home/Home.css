@@ -33,30 +33,3 @@ h3 {
   margin: 5px;
   padding: 5px;
 }
-
-.add-warehouse-btn {
-  opacity: 0.7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 17px;
-  transition-property: font-size, box-shadow;
-  transition: 0.2s ease;
-  backface-visibility: hidden;
-  border: 1px solid var(--accent-color-1);
-}
-
-.add-warehouse-btn:hover {
-  -webkit-font-smoothing: subpixel-antialiased;
-  transform: translate3d(0, 0, 0) scale(1.1, 1.1);
-  box-shadow: 5px 3px 10px var(--accent-color-1);
-  opacity: 1;
-}
-.add-warehouse-btn:active {
-  transition: 0.2s;
-  transform: translateY(1px);
-  box-shadow: 2px 1px 5px var(--accent-color-1);
-}
