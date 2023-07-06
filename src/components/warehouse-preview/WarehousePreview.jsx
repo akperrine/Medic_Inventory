@@ -4,6 +4,7 @@ import { AiTwotoneEdit } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
 import "./WarehousePreview.css";
 import {
+  deleteWarehouse,
   getWarehouses,
   updateWarehouse,
 } from "../../utils/warehouseAPI/WarehouseApi";
@@ -36,6 +37,19 @@ function WarehousePreview({ warehouse, setWarehouses }) {
     }
   };
 
+  const handleToggleDelete = async (e) => {
+    const response = prompt("Are you sure you want to delete?");
+    const formattedResponse = response.toLowerCase().trim();
+    console.log(formattedResponse);
+    if (formattedResponse == "yes") {
+      deleteWarehouse(warehouse.warehouseId);
+      alert(`Successfully deleted warehouse: ${warehouse.location}`);
+      await getWarehouses()
+        .then((jsonData) => setWarehouses(jsonData))
+        .catch((error) => console.log("Error:", error));
+    }
+  };
+
   const handleChange = (e) => setLocationInput(e.target.value);
 
   return (
@@ -64,7 +78,7 @@ function WarehousePreview({ warehouse, setWarehouses }) {
         <button className="preview-change-btn" onClick={handleToggleUpdate}>
           <AiTwotoneEdit />
         </button>
-        <button className="preview-change-btn">
+        <button className="preview-change-btn" onClick={handleToggleDelete}>
           <HiOutlineTrash />
         </button>
       </div>

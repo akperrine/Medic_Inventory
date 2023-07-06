@@ -30,3 +30,12 @@ export const updateWarehouse = async (warehouseId, location) => {
     }),
   });
 };
+
+export const deleteWarehouse = async (warehouseId) => {
+  return await fetch(`http://localhost:8080/warehouse/delete/${warehouseId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
