@@ -23,6 +23,8 @@
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 body {
@@ -31,6 +33,12 @@ body {
   min-height: 100vh;
   color: var(--neutral-color-2);
   overflow-x: hidden;
+}
+
+button {
+  border: none;
+  outline: none;
+  border-radius: 5px;
 }
 
 #root {

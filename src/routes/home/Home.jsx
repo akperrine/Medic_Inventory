@@ -24,10 +24,15 @@ export default function Home() {
   return (
     <div className="home-container">
       <h3>Current Warehouses</h3>
-      <form>
-        <input />
-        <button>Submit</button>
-      </form>
+      {toggleAddForm ? (
+        <form>
+          <input />
+          <button>Submit</button>
+        </form>
+      ) : (
+        <button className="add-warehouse-btn">Add warehouse {"\u271A"}</button>
+      )}
+
       <ul className="warehouse-list">
         {warehouses.map((warehouse) => (
           <WarehousePreview key={warehouse.warehouseId} warehouse={warehouse} />
