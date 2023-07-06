@@ -31,6 +31,16 @@ export interface IAddWarehouseFormProps {
   addOrUpdate: FormType;
 }
 
+export interface IInventoryTableProps {
+  warehouse: IWarehouse;
+  toggleDelete: boolean;
+  handleDelete: (
+    e: React.MouseEvent<SVGElement>,
+    item: IInventory
+  ) => Promise<void>;
+  handleToggleEdit: (itemToEdit: IInventory) => void;
+}
+
 //API Data Types
 export interface IInventoryDTO {
   warehouseId: number;

@@ -1,8 +1,9 @@
 import { Outlet, Route, Routes } from "react-router-dom";
-import Warehouse from "./routes/warehouseInventory/WarehouseInventory";
+// import InventoryWarehouse from "./routes/warehouseInventory/WarehouseInventory";
 import Home from "./routes/home/Home";
 import Navigation from "./routes/navigation/Navigation";
 import "./App.css";
+import LinkedSingleWarehouse from "./routes/linkedSingleWarehouse/linkedSingleWarehouse";
 
 const App = () => {
   return (
@@ -11,7 +12,7 @@ const App = () => {
       <Routes className="body-container">
         <Route path="/" element={<Outlet />} />
         <Route index element={<Home />} />
-        <Route path="/location" element={<Warehouse />} />
+        <Route path="/location" element={<LinkedSingleWarehouse />} />
       </Routes>
     </div>
   );

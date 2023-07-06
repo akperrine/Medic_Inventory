@@ -83,6 +83,7 @@ export default function Home() {
 
   return (
     <div className="home-container">
+      {/* <CriticalInventory /> */}
       <h3>Current Warehouses</h3>
       {renderAddWarehouseFormOrButton()}
       <ul className="warehouse-list">
