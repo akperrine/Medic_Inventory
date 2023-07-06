@@ -25,3 +25,13 @@
 .preview-link:hover {
   color: var(--accent-color-2);
 }
+
+.preview-btn-container {
+  margin-top: 10px;
+}
+
+.preview-change-btn {
+  padding: 3px;
+  margin-right: 10px;
+  font-size: 16px;
+}
