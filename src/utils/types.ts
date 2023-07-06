@@ -30,3 +30,11 @@ export interface IAddWarehouseFormProps {
   handleAddFormVisabiltiy: () => void;
   addOrUpdate: FormType;
 }
+
+//API Data Types
+export interface IInventoryDTO {
+  warehouseId: number;
+  itemName: string;
+  quantity: number;
+  maxCapacity: number;
+}

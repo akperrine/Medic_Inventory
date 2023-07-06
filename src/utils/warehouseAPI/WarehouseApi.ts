@@ -8,7 +8,7 @@ export const getWarehouses = async () => {
   }
 };
 
-export const getSingleWarehouse = async (id) => {
+export const getSingleWarehouse = async (id: number) => {
   try {
     console.log("url: ", `http://localhost:8080/warehouse/${id}`);
     const response = await fetch(`http://localhost:8080/warehouse/${id}`);
@@ -19,7 +19,7 @@ export const getSingleWarehouse = async (id) => {
   }
 };
 
-export const addWarehouse = async (location) => {
+export const addWarehouse = async (location: string) => {
   return await fetch("http://localhost:8080/warehouse", {
     method: "POST",
     headers: {
@@ -29,7 +29,10 @@ export const addWarehouse = async (location) => {
   });
 };
 
-export const updateWarehouse = async (warehouseId, location) => {
+export const updateWarehouse = async (
+  warehouseId: number,
+  location: string
+) => {
   return await fetch("http://localhost:8080/warehouse/update", {
     method: "PUT",
     headers: {
@@ -42,7 +45,7 @@ export const updateWarehouse = async (warehouseId, location) => {
   });
 };
 
-export const deleteWarehouse = async (warehouseId) => {
+export const deleteWarehouse = async (warehouseId: number) => {
   return await fetch(`http://localhost:8080/warehouse/delete/${warehouseId}`, {
     method: "DELETE",
     headers: {

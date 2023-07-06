@@ -8,6 +8,8 @@ import {
   deleteInvevtory,
   updateInvevtory,
 } from "../../utils/warehouseAPI/InventoryApi";
+import { FormType } from "../../utils/enums";
+import { IInventory, IInventoryDTO, IWarehouse } from "../../utils/types";
 import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
 
 const initialAddFormInput = {
@@ -18,43 +20,45 @@ const initialAddFormInput = {
 
 const WarehouseInventory = () => {
   const location = useLocation();
-  // const [toggleAddInventory, setToggleAddInventory] = useState(false);
-  const [option, setOption] = useState("none");
-  const [editItemId, setEditItemId] = useState(null);
-  const [warehouse, setWarehouse] = useState(location.state.warehouse);
+  const [option, setOption] = useState<FormType>(FormType.NONE);
+  const [editItemId, setEditItemId] = useState(NaN);
+  const [warehouse, setWarehouse] = useState<IWarehouse>(
+    location.state.warehouse
+  );
   const [formInput, setFormInput] = useState(initialAddFormInput);
   const [toggleDelete, setToggleDelete] = useState(false);
 
-  const handleFormChange = (e) => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setFormInput({ ...formInput, [name]: value });
   };
 
-  const handleToggleAdd = () => setOption("add");
+  const handleToggleAdd = () => setOption(FormType.ADD);
   const handleToggleNone = () => {
-    setOption("none");
-    setEditItemId(null);
+    setOption(FormType.NONE);
+    setEditItemId(NaN);
   };
-  const handleToggleEdit = (itemToEdit) => {
+
+  const handleToggleEdit = (itemToEdit: IInventory) => {
     console.log(itemToEdit);
     const {
       item: { itemName, itemId },
       quantity,
       maxCapacity,
     } = itemToEdit;
-    setOption("edit");
+
+    setOption(FormType.UPDATE);
     setFormInput({
       itemName: itemName,
-      quantity: quantity,
-      maxCapacity: maxCapacity,
+      quantity: quantity.toString(),
+      maxCapacity: maxCapacity.toString(),
     });
     setEditItemId(itemId);
   };
 
   const handleToggleDelete = () => setToggleDelete(!toggleDelete);
 
-  const handleAddSubmit = async (e) => {
+  const handleAddSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { quantity, maxCapacity } = formInput;
     if (
@@ -65,6 +69,10 @@ const WarehouseInventory = () => {
         ...formInput,
         warehouseId: warehouse.warehouseId,
       };
+
+      parseInt(inventoryDataPayload.quantity);
+      parseInt(inventoryDataPayload.quantity);
+
       await addInvevtory(inventoryDataPayload);
       await getSingleWarehouse(warehouse.warehouseId)
         .then((jsonData) => setWarehouse(jsonData))
@@ -74,7 +82,7 @@ const WarehouseInventory = () => {
     }
   };
 
-  const handleEditSubmit = async (e) => {
+  const handleEditSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { itemName, quantity, maxCapacity } = formInput;
     if (
@@ -83,6 +91,8 @@ const WarehouseInventory = () => {
     ) {
       const inventoryDataPayload = {
         ...formInput,
+        quantity: parseInt(quantity),
+        maxCapacity: parseInt(maxCapacity),
         warehouseId: warehouse.warehouseId,
       };
       await updateInvevtory(editItemId, inventoryDataPayload);
@@ -94,14 +104,20 @@ const WarehouseInventory = () => {
     }
   };
 
-  const handleDelete = async (e, item) => {
+  const handleDelete = async (
+    e: React.FocusEvent<HTMLFormElement>,
+    item: IInventory
+  ) => {
     e.preventDefault();
     console.log(item, warehouse.warehouseId);
     const permission = prompt(
       `Are you sure you want to delete item: ${item.item.itemName}\n from Warehouse: ${warehouse.location}?\n
       Type YES to delete permanently.`
     );
-    const formattedPermission = permission.toLowerCase().trim();
+    let formattedPermission;
+    if (permission) {
+      formattedPermission = permission.toLowerCase().trim();
+    }
     if (formattedPermission === "yes") {
       await deleteInvevtory(item.item.itemId, warehouse.warehouseId);
       await getSingleWarehouse(warehouse.warehouseId)
@@ -162,7 +178,7 @@ const WarehouseInventory = () => {
             </div>
           </form>
         )}
-        {option == "edit" && (
+        {option == "update" && (
           <form className="inventory-add-form" onSubmit={handleEditSubmit}>
             <h2>Edit Item</h2>
             <label>Item Name</label>
@@ -205,30 +221,6 @@ const WarehouseInventory = () => {
             </button>
           </div>
         )}
-        {/* {toggleAddInventory ? (
-          <form className="inventory-add-form" onSubmit={handleAddSubmit}>
-            <h2>Add an Item</h2>
-            <label>Item Name</label>
-            <input name="itemName" onChange={handleFormChange} required />
-            <label>Quantity</label>
-            <input name="quantity" onChange={handleFormChange} required />
-            <label>Maximum Capacity</label>
-            <input name="maxCapacity" onChange={handleFormChange} required />
-            <div className="add-warehouse-form-btn-container">
-              <button type="submit">Submit</button>
-              <button type="button" onClick={handleToggleAdd}>
-                Cancel
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="inv-btn-container">
-            <button className="inv-btn" onClick={handleToggleAdd}>
-              Add an Item
-            </button>
-            <button className="inv-btn">Delete an Item</button>
-          </div>
-        )} */}
       </div>
     </div>
   );
