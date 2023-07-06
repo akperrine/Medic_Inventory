@@ -11,6 +11,7 @@ import {
 import { FormType } from "../../utils/enums";
 import { IInventory, IInventoryDTO, IWarehouse } from "../../utils/types";
 import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
+import AddInventoryForm from "../../components/forms/addInventoryForm/UpdateInventoryForm";
 
 const initialAddFormInput = {
   itemName: "",
@@ -27,6 +28,10 @@ const WarehouseInventory = () => {
   );
   const [formInput, setFormInput] = useState(initialAddFormInput);
   const [toggleDelete, setToggleDelete] = useState(false);
+
+  const validateData = (quantity: string, maxCapacity: string) =>
+    (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
+    parseInt(quantity) <= parseInt(maxCapacity);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -58,44 +63,25 @@ const WarehouseInventory = () => {
 
   const handleToggleDelete = () => setToggleDelete(!toggleDelete);
 
-  const handleAddSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { quantity, maxCapacity } = formInput;
-    if (
-      (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
-      parseInt(quantity) <= parseInt(maxCapacity)
-    ) {
-      const inventoryDataPayload = {
-        ...formInput,
-        warehouseId: warehouse.warehouseId,
-      };
-
-      parseInt(inventoryDataPayload.quantity);
-      parseInt(inventoryDataPayload.quantity);
-
-      await addInvevtory(inventoryDataPayload);
-      await getSingleWarehouse(warehouse.warehouseId)
-        .then((jsonData) => setWarehouse(jsonData))
-        .catch((error) => console.log("Error:", error));
-      setFormInput(initialAddFormInput);
-      handleToggleNone();
-    }
-  };
-
-  const handleEditSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    formType: FormType
+  ) => {
     e.preventDefault();
     const { itemName, quantity, maxCapacity } = formInput;
-    if (
-      (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
-      quantity <= maxCapacity
-    ) {
-      const inventoryDataPayload = {
-        ...formInput,
-        quantity: parseInt(quantity),
-        maxCapacity: parseInt(maxCapacity),
-        warehouseId: warehouse.warehouseId,
-      };
-      await updateInvevtory(editItemId, inventoryDataPayload);
+    const inventoryDataPayload: IInventoryDTO = {
+      ...formInput,
+      quantity: parseInt(quantity),
+      maxCapacity: parseInt(maxCapacity),
+      warehouseId: warehouse.warehouseId,
+    };
+    const validQuantityAndCapacity = validateData(quantity, maxCapacity);
+    if (validQuantityAndCapacity) {
+      if (formType === "add") {
+        await addInvevtory(inventoryDataPayload);
+      } else {
+        await updateInvevtory(editItemId, inventoryDataPayload);
+      }
       await getSingleWarehouse(warehouse.warehouseId)
         .then((jsonData) => setWarehouse(jsonData))
         .catch((error) => console.log("Error:", error));
@@ -105,7 +91,7 @@ const WarehouseInventory = () => {
   };
 
   const handleDelete = async (
-    e: React.FocusEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>,
     item: IInventory
   ) => {
     e.preventDefault();
@@ -162,7 +148,10 @@ const WarehouseInventory = () => {
       </table>
       <div>
         {option == "add" && (
-          <form className="inventory-add-form" onSubmit={handleAddSubmit}>
+          <form
+            className="inventory-add-form"
+            onSubmit={(e) => handleSubmit(e, FormType.ADD)}
+          >
             <h2>Add an Item</h2>
             <label>Item Name</label>
             <input name="itemName" onChange={handleFormChange} required />
@@ -179,7 +168,10 @@ const WarehouseInventory = () => {
           </form>
         )}
         {option == "update" && (
-          <form className="inventory-add-form" onSubmit={handleEditSubmit}>
+          <form
+            className="inventory-add-form"
+            onSubmit={(e) => handleSubmit(e, FormType.UPDATE)}
+          >
             <h2>Edit Item</h2>
             <label>Item Name</label>
             <input
