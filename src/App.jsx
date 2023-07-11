@@ -1,18 +1,19 @@
 import { Outlet, Route, Routes } from "react-router-dom";
-import Warehouse from "./routes/WarehouseLocation";
-import Home from "./routes/Home";
-import Navigation from "./routes/Navigation";
+import Warehouse from "./routes/WarehouseInventory";
+import Home from "./routes/home/Home";
+import Navigation from "./routes/navigation/Navigation";
+import "./App.css";
 
 const App = () => {
   return (
-    <>
+    <div className="app-container">
       <Navigation />
-      <Routes>
+      <Routes className="body-container">
         <Route path="/" element={<Outlet />} />
         <Route index element={<Home />} />
         <Route path="/location" element={<Warehouse />} />
       </Routes>
-    </>
+    </div>
   );
 };
 

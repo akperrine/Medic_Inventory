@@ -1,0 +1,37 @@
+.warehouse-preview-container {
+  width: 300px;
+  background-color: var(--secondary-color-4);
+  border-radius: 8px;
+  padding: 65px;
+  border: 1px solid var(--accent-color-1);
+  margin: 40px;
+  box-shadow: 0 0 10px var(--accent-color-1);
+  transition: box-shadow 0.3s ease;
+}
+
+.warehouse-preview-container:hover {
+  box-shadow: 3px 3px 20px var(--accent-color-1);
+}
+
+.preview-location {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.preview-link {
+  font-size: 20px;
+  transition: color 0.1s ease;
+}
+.preview-link:hover {
+  color: var(--accent-color-2);
+}
+
+.preview-btn-container {
+  margin-top: 10px;
+}
+
+.preview-change-btn {
+  padding: 3px;
+  margin-right: 10px;
+  font-size: 16px;
+}
