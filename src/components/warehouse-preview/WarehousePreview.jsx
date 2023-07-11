@@ -71,7 +71,7 @@ function WarehousePreview({ warehouse, setWarehouses }) {
           <br /> {warehouse.location}
         </h6>
       )}
-      <Link className="preview-link" to={"/location"} state={warehouse}>
+      <Link className="preview-link" to={"/location"} state={{ warehouse }}>
         Manage Inventory
       </Link>
       <div className="preview-btn-container">

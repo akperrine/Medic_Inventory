@@ -59,7 +59,10 @@ export default function Home() {
           </div>
         </form>
       ) : (
-        <button onClick={handleAddFormVisabiltiy} className="add-warehouse-btn">
+        <button
+          onClick={handleAddFormVisabiltiy}
+          className="effect-btn inv-btn"
+        >
           Add warehouse {"\u271A"}
         </button>
       )}
