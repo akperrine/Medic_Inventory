@@ -12,7 +12,6 @@ import {
 function WarehousePreview({ warehouse, setWarehouses }) {
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
   const [locationInput, setLocationInput] = useState("");
-  console.log(warehouse);
 
   const handleToggleUpdate = () => setToggleUpdateForm(!toggleUpdateForm);
 
