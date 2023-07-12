@@ -9,7 +9,6 @@ export const addInvevtory = async (newInvPayload) => {
 };
 
 export const updateInvevtory = async (itemId, invPayloadToUpdate) => {
-  console.log("inReq ", invPayloadToUpdate);
   return await fetch(`http://localhost:8080/inventory/${itemId}`, {
     method: "PUT",
     headers: {
@@ -17,4 +16,16 @@ export const updateInvevtory = async (itemId, invPayloadToUpdate) => {
     },
     body: JSON.stringify(invPayloadToUpdate),
   });
+};
+
+export const deleteInvevtory = async (itemId, warehouseId) => {
+  return await fetch(
+    `http://localhost:8080/inventory/${itemId}/${warehouseId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 };

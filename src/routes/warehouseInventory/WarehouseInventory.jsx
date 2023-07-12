@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AiTwotoneEdit } from "react-icons/ai";
+import { HiOutlineTrash } from "react-icons/hi";
 import "./WarehouseInventory.css";
 import {
   addInvevtory,
+  deleteInvevtory,
   updateInvevtory,
 } from "../../utils/warehouseAPI/InventoryApi";
-import {
-  getSingleWarehouse,
-  getWarehouses,
-} from "../../utils/warehouseAPI/WarehouseApi";
+import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
 
 const initialAddFormInput = {
   itemName: "",
@@ -24,8 +23,7 @@ const WarehouseInventory = () => {
   const [editItemId, setEditItemId] = useState(null);
   const [warehouse, setWarehouse] = useState(location.state.warehouse);
   const [formInput, setFormInput] = useState(initialAddFormInput);
-  console.log(editItemId);
-  // const { warehouseItems } = warehouse;
+  const [toggleDelete, setToggleDelete] = useState(false);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -54,12 +52,14 @@ const WarehouseInventory = () => {
     setEditItemId(itemId);
   };
 
+  const handleToggleDelete = () => setToggleDelete(!toggleDelete);
+
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     const { quantity, maxCapacity } = formInput;
     if (
       (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
-      quantity <= maxCapacity
+      parseInt(quantity) <= parseInt(maxCapacity)
     ) {
       const inventoryDataPayload = {
         ...formInput,
@@ -76,7 +76,6 @@ const WarehouseInventory = () => {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-
     const { itemName, quantity, maxCapacity } = formInput;
     if (
       (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
@@ -95,6 +94,23 @@ const WarehouseInventory = () => {
     }
   };
 
+  const handleDelete = async (e, item) => {
+    e.preventDefault();
+    console.log(item, warehouse.warehouseId);
+    const permission = prompt(
+      `Are you sure you want to delete item: ${item.item.itemName}\n from Warehouse: ${warehouse.location}?\n
+      Type YES to delete permanently.`
+    );
+    const formattedPermission = permission.toLowerCase().trim();
+    if (formattedPermission === "yes") {
+      await deleteInvevtory(item.item.itemId, warehouse.warehouseId);
+      await getSingleWarehouse(warehouse.warehouseId)
+        .then((jsonData) => setWarehouse(jsonData))
+        .catch((error) => console.log("Error:", error));
+    }
+    console.log("deleted successful");
+  };
+
   return (
     <div className="inventory-table-container">
       <h2>{warehouse.location}</h2>
@@ -104,7 +120,7 @@ const WarehouseInventory = () => {
             <th>Item Name</th>
             <th>Quantity</th>
             <th>Maximum Capacity</th>
-            <th>Edit</th>
+            <th>{toggleDelete ? "Delete" : "Edit"}</th>
           </tr>
         </thead>
         <tbody>
@@ -114,9 +130,15 @@ const WarehouseInventory = () => {
               <td>{item.quantity}</td>
               <td>{item.maxCapacity}</td>
               <td>
-                <button className="preview-change-btn">
-                  <AiTwotoneEdit onClick={() => handleToggleEdit(item)} />
-                </button>
+                {toggleDelete ? (
+                  <button className="preview-change-btn">
+                    <HiOutlineTrash onClick={(e) => handleDelete(e, item)} />
+                  </button>
+                ) : (
+                  <button className="preview-change-btn">
+                    <AiTwotoneEdit onClick={() => handleToggleEdit(item)} />
+                  </button>
+                )}
               </td>
             </tr>
           ))}
@@ -178,7 +200,9 @@ const WarehouseInventory = () => {
             <button className="inv-btn" onClick={handleToggleAdd}>
               Add an Item
             </button>
-            <button className="inv-btn">Delete an Item</button>
+            <button className="inv-btn" onClick={handleToggleDelete}>
+              {toggleDelete ? "Cancel Delete" : "Delete an Item"}
+            </button>
           </div>
         )}
         {/* {toggleAddInventory ? (
