@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -9,11 +9,19 @@ import {
   updateWarehouse,
 } from "../../utils/warehouseAPI/WarehouseApi";
 
-function WarehousePreview({ warehouse, setWarehouses }) {
+import { IWarehouse, IWarehousePreview } from "../../utils/types";
+import { FormType } from "../../utils/enums";
+import AddWarehouseForm from "../forms/addWarehouseForm/AddWarehouseForm";
+
+function WarehousePreview(props: {
+  warehouse: IWarehouse;
+  setWarehouses: React.Dispatch<React.SetStateAction<IWarehouse[]>>;
+}) {
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
   const [locationInput, setLocationInput] = useState("");
-  const inputRef = useRef(null);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { warehouse, setWarehouses } = props;
+  console.log(toggleUpdateForm);
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -22,7 +30,7 @@ function WarehousePreview({ warehouse, setWarehouses }) {
 
   const handleToggleUpdate = () => setToggleUpdateForm(!toggleUpdateForm);
 
-  const handleUpdateSubmit = async (e) => {
+  const handleUpdateSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (locationInput.trim() === "") {
@@ -43,9 +51,12 @@ function WarehousePreview({ warehouse, setWarehouses }) {
     }
   };
 
-  const handleToggleDelete = async (e) => {
+  const handleToggleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const response = prompt("Are you sure you want to delete?");
-    const formattedResponse = response.toLowerCase().trim();
+    let formattedResponse;
+    if (response) {
+      formattedResponse = response.toLowerCase().trim();
+    }
     if (formattedResponse == "yes") {
       deleteWarehouse(warehouse.warehouseId);
       alert(`Successfully deleted warehouse: ${warehouse.location}`);
@@ -55,21 +66,19 @@ function WarehousePreview({ warehouse, setWarehouses }) {
     }
   };
 
-  const handleChange = (e) => setLocationInput(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setLocationInput(e.target.value);
 
   return (
     <div className="warehouse-preview-container">
       {toggleUpdateForm ? (
-        <form className="add-warehouse-form" onSubmit={handleUpdateSubmit}>
-          <label>Add a new location</label>
-          <input onChange={handleChange} ref={inputRef} />
-          <div className="add-warehouse-form-btn-container">
-            <button type="submit">Submit</button>
-            <button type="button" onClick={handleToggleUpdate}>
-              Cancel
-            </button>
-          </div>
-        </form>
+        <AddWarehouseForm
+          handleFormSubmit={handleUpdateSubmit}
+          handleChange={handleChange}
+          inputRef={inputRef}
+          handleAddFormVisabiltiy={handleToggleUpdate}
+          addOrUpdate={FormType.UPDATE}
+        />
       ) : (
         <h6 className="preview-location">
           Location:
