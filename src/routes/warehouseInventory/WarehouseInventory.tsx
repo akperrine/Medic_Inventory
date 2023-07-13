@@ -32,6 +32,11 @@ const WarehouseInventory = () => {
     (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
     parseInt(quantity) <= parseInt(maxCapacity);
 
+  const renderCriticalText = (quantity: number, maxCapacity: number) =>
+    `${
+      quantity > 0.2 * maxCapacity ? "rgb(255, 255, 255)" : "rgb(214, 85, 85)"
+    }`;
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormInput({ ...formInput, [name]: value });
@@ -128,7 +133,13 @@ const WarehouseInventory = () => {
           {warehouse.warehouseItems.map((item) => (
             <tr key={item.item.itemId} className="inventory-row">
               <td>{item.item.itemName}</td>
-              <td>{item.quantity}</td>
+              <td
+                style={{
+                  color: renderCriticalText(item.quantity, item.maxCapacity),
+                }}
+              >
+                {item.quantity}
+              </td>
               <td>{item.maxCapacity}</td>
               <td>
                 {toggleDelete ? (
