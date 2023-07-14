@@ -12,6 +12,7 @@ import { FormType } from "../../utils/enums";
 import { IInventory, IInventoryDTO, IWarehouse } from "../../utils/types";
 import { getSingleWarehouse } from "../../utils/warehouseAPI/WarehouseApi";
 
+// data shape for Add Form
 const initialAddFormInput = {
   itemName: "",
   quantity: "",
@@ -28,15 +29,18 @@ const WarehouseInventory = () => {
   const [formInput, setFormInput] = useState(initialAddFormInput);
   const [toggleDelete, setToggleDelete] = useState(false);
 
+  // Validation function for only numbers and quantity <= capacity
   const validateData = (quantity: string, maxCapacity: string) =>
     (/^\d+$/.test(quantity) || /^\d+$/.test(maxCapacity)) &&
     parseInt(quantity) <= parseInt(maxCapacity);
 
+  // render color of quantity if below 20%
   const renderCriticalText = (quantity: number, maxCapacity: number) =>
     `${
       quantity > 0.2 * maxCapacity ? "rgb(255, 255, 255)" : "rgb(214, 85, 85)"
     }`;
 
+  // update inputs to state
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormInput({ ...formInput, [name]: value });
@@ -48,6 +52,7 @@ const WarehouseInventory = () => {
     setEditItemId(NaN);
   };
 
+  // Render Edit form
   const handleToggleEdit = (itemToEdit: IInventory) => {
     console.log(itemToEdit);
     const {
@@ -56,12 +61,15 @@ const WarehouseInventory = () => {
       maxCapacity,
     } = itemToEdit;
 
+    // set form type as Update to display Edit
     setOption(FormType.UPDATE);
+    // auto populate inputs with current Inventory data
     setFormInput({
       itemName: itemName,
       quantity: quantity.toString(),
       maxCapacity: maxCapacity.toString(),
     });
+    // Ensure itemId is held
     setEditItemId(itemId);
   };
 
@@ -73,22 +81,29 @@ const WarehouseInventory = () => {
   ) => {
     e.preventDefault();
     const { itemName, quantity, maxCapacity } = formInput;
+
+    // transfer data into DTO between front and back end
     const inventoryDataPayload: IInventoryDTO = {
       ...formInput,
       quantity: parseInt(quantity),
       maxCapacity: parseInt(maxCapacity),
       warehouseId: warehouse.warehouseId,
     };
+
+    // validation of data
     const validQuantityAndCapacity = validateData(quantity, maxCapacity);
     if (validQuantityAndCapacity) {
       if (formType === "add") {
+        // if add, add inventory, else Update it
         await addInvevtory(inventoryDataPayload);
       } else {
         await updateInvevtory(editItemId, inventoryDataPayload);
       }
+      // fetch that single warehouse to repopulate front end with updated code
       await getSingleWarehouse(warehouse.warehouseId)
         .then((jsonData) => setWarehouse(jsonData))
         .catch((error) => console.log("Error:", error));
+      // reset state
       setFormInput(initialAddFormInput);
       handleToggleNone();
     }
@@ -99,7 +114,8 @@ const WarehouseInventory = () => {
     item: IInventory
   ) => {
     e.preventDefault();
-    console.log(item, warehouse.warehouseId);
+
+    // esnure user wants to delete
     const permission = prompt(
       `Are you sure you want to delete item: ${item.item.itemName}\n from Warehouse: ${warehouse.location}?\n
       Type YES to delete permanently.`
@@ -109,6 +125,7 @@ const WarehouseInventory = () => {
       formattedPermission = permission.toLowerCase().trim();
     }
     if (formattedPermission === "yes") {
+      // Delete inventory and get warehouse data again to populate with new data
       await deleteInvevtory(item.item.itemId, warehouse.warehouseId);
       await getSingleWarehouse(warehouse.warehouseId)
         .then((jsonData) => setWarehouse(jsonData))

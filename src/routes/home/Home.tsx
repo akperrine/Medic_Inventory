@@ -29,11 +29,13 @@ export default function Home() {
       .catch((error) => console.log("Error:", error));
   }, []);
 
+  //Makes Add Form Visible/ invisible
   const handleAddFormVisabiltiy = () => setToggleAddForm(!toggleAddForm);
 
   const handleFormSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // validation to make sure not empty
     if (locationInput.trim() === "") {
       console.log(locationInput);
       console.log("work");
@@ -41,11 +43,13 @@ export default function Home() {
       return;
     }
 
+    //Post request to add warehouse
     try {
       await addWarehouse(locationInput);
       getWarehouses()
         .then((jsonData) => setWarehouses(jsonData))
         .catch((error) => console.log("Error:", error));
+      // reset location   and unmount add form
       setLocationInput("");
       setToggleAddForm(false);
     } catch (error) {
@@ -57,6 +61,7 @@ export default function Home() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLocationInput(e.target.value);
 
+  // Conditionally render Add Form or buttons to add form
   const renderAddWarehouseFormOrButton = (): JSX.Element => {
     return toggleAddForm ? (
       <AddWarehouseForm

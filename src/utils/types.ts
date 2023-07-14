@@ -23,6 +23,7 @@ export interface IWarehousePreview {
   setWarehouses: React.Dispatch<React.SetStateAction<IWarehouse[]>>;
 }
 
+// Prop interfaces
 export interface IAddWarehouseFormProps {
   handleFormSubmit: (event: React.FocusEvent<HTMLFormElement>) => void;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;

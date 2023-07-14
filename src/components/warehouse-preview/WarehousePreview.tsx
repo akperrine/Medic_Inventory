@@ -21,29 +21,34 @@ function WarehousePreview(props: {
   const [locationInput, setLocationInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { warehouse, setWarehouses } = props;
-  console.log(toggleUpdateForm);
+
+  //focuses input upon form load
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [toggleUpdateForm]);
 
+  // Display Update form
   const handleToggleUpdate = () => setToggleUpdateForm(!toggleUpdateForm);
 
   const handleUpdateSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    //Validate location not empty
     if (locationInput.trim() === "") {
       console.log(locationInput);
       alert("Location must not be empty");
       return;
     }
 
+    // Update warehouse and fetch all again to reload
     try {
       await updateWarehouse(warehouse.warehouseId, locationInput);
       await getWarehouses()
         .then((jsonData) => setWarehouses(jsonData))
         .catch((error) => console.log("Error:", error));
+      // reset input and remove update form
       setLocationInput("");
       setToggleUpdateForm(false);
     } catch (error) {
@@ -52,11 +57,14 @@ function WarehousePreview(props: {
   };
 
   const handleToggleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    // Esnure warehouse should be deleted, and format response to ignore case
     const response = prompt("Are you sure you want to delete?");
     let formattedResponse;
     if (response) {
       formattedResponse = response.toLowerCase().trim();
     }
+
+    //conditionally delete wareouse if typed "yes"
     if (formattedResponse == "yes") {
       deleteWarehouse(warehouse.warehouseId);
       alert(`Successfully deleted warehouse: ${warehouse.location}`);
@@ -66,6 +74,7 @@ function WarehousePreview(props: {
     }
   };
 
+  // handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLocationInput(e.target.value);
 
